@@ -2,7 +2,7 @@
 
 ## Descrição
 
-Este aplicativo foi desenvolvido como Trabalho de conclusão de curso para o Bacharelado em Sistemas de Informação na Universidade Federal de Santa Catarina e não possui propósitos comerciais.Este
+Este aplicativo foi desenvolvido como Trabalho de conclusão de curso para o Bacharelado em Sistemas de Informação na Universidade Federal de Santa Catarina e não possui propósitos comerciais.
 
 ## Referências
 
