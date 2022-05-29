@@ -5,8 +5,23 @@
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/mateu/codigos/tcc/ar_makeup_codelab/app/src/main/res/drawable-anydpi/ic_action_name.xml" value="0.168" />
+        <entry key="..\:/Users/mateu/codigos/tcc/ar_makeup_codelab/app/src/main/res/drawable-xhdpi/icon_favorite.xml" value="0.168" />
+        <entry key="..\:/Users/mateu/codigos/tcc/ar_makeup_codelab/app/src/main/res/drawable/bottom_navigation_bar_shadow.xml" value="0.168" />
+        <entry key="..\:/Users/mateu/codigos/tcc/ar_makeup_codelab/app/src/main/res/font/roboto.xml" value="0.23020833333333332" />
+        <entry key="..\:/Users/mateu/codigos/tcc/ar_makeup_codelab/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/mateu/codigos/tcc/ar_makeup_codelab/app/src/main/res/layout/activity_product_detail.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/mateu/codigos/tcc/ar_makeup_codelab/app/src/main/res/layout/activity_product_list.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/mateu/codigos/tcc/ar_makeup_codelab/app/src/main/res/layout/card_item_product_view.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/mateu/codigos/tcc/ar_makeup_codelab/app/src/main/res/menu/toolbar_menu.xml" value="0.2" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

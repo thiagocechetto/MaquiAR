@@ -30,8 +30,8 @@ class AugmentedFaceNode(private val augmentedFace: AugmentedFace?, val context: 
         faceLandmarks[faceLandmark] = faceRegion
     }
 
-    fun setFaceMeshTexture(assetName: String) {
-        augmentedFaceRenderer.createOnGlThread(context, assetName)
+    fun setFaceMeshTexture(assetNames: ArrayList<String>) {
+        augmentedFaceRenderer.createOnGlThread(context, assetNames)
         renderFaceMesh = true
     }
 
@@ -55,6 +55,14 @@ class AugmentedFaceNode(private val augmentedFace: AugmentedFace?, val context: 
                 region.draw(objectMatrix, viewMatrix, projectionMatrix, colorCorrectionRgba)
             }
         }
+    }
+
+    fun setContourColor(contourColor: FloatArray) {
+        augmentedFaceRenderer.setContourColor(contourColor)
+    }
+
+    fun setEyeshadowColor(eyeshadowColor: FloatArray){
+        augmentedFaceRenderer.setEyeshadowColor(eyeshadowColor)
     }
 
     private fun getRegionPose(faceLandmark: FaceLandmark) : Pose? {
