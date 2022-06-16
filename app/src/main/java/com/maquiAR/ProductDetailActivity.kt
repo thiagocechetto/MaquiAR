@@ -113,7 +113,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     fun setProductInfo() {
         prodName!!.text = productPicked!!.name
-        prodColor!!.text = productPicked!!.colorName
+        prodColor!!.text = "Cor: " + productPicked!!.colorName
         prodDescription!!.text = productPicked!!.description
     }
 
