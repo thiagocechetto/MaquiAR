@@ -3,6 +3,7 @@
     package="com.maquiAR">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18"/>
 
     <uses-feature
         android:name="android.hardware.camera.ar"
@@ -17,9 +18,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ARFaces">
+        android:theme="@style/Theme.MaquiAR">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
         <activity
-            android:name=".Models.ProductDetailActivity"
+            android:name=".FavoriteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ProductListActivity"
@@ -31,7 +44,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ARVisualizationActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="locked">
             <intent-filter>

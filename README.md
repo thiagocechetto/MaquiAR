@@ -11,3 +11,8 @@ Algumas features deste trabalho foram realizadas por terceiros. Para fazer o uso
 ### ARCore Augmented Faces wrapper without Sceneform
 
 Link: https://github.com/Kristina-Simakova/photobooth_codelab_start_project
+
+### Android Image Slide
+
+Link: https://github.com/denzcoskun/ImageSlideshow
+

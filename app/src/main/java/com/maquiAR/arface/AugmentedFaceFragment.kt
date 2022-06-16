@@ -4,10 +4,13 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
 import android.net.Uri
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -15,17 +18,22 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.app.ActivityCompat.checkSelfPermission
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import com.google.ar.core.*
+import com.google.ar.core.ArCoreApk.InstallStatus
+import com.google.ar.core.Session.Feature
+import com.google.ar.core.exceptions.*
 import com.maquiAR.R
 import com.maquiAR.arface.helpers.DisplayRotationHelper
 import com.maquiAR.arface.helpers.SnackbarHelper
 import com.maquiAR.arface.helpers.TrackingStateHelper
 import com.maquiAR.arface.rendering.BackgroundRenderer
-import com.google.ar.core.*
-import com.google.ar.core.ArCoreApk.InstallStatus
-import com.google.ar.core.Session.Feature
-import com.google.ar.core.exceptions.*
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+import java.nio.IntBuffer
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -50,6 +58,8 @@ public class AugmentedFaceFragment : Fragment(), GLSurfaceView.Renderer {
     private val RC_PERMISSIONS = 1010
 
     private var augmentedFaceListener: AugmentedFaceListener? = null
+
+    var takeScreenshot: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -358,8 +368,60 @@ public class AugmentedFaceFragment : Fragment(), GLSurfaceView.Renderer {
                 println("Exception on the OpenGL thread $t")
             } finally {
                 GLES20.glDepthMask(true)
+                if(takeScreenshot) {
+                    shareImage(saveBitmap(takeScreenshot(gl)))
+                    takeScreenshot = false
+                }
             }
         }
+    }
+
+    fun shareImage(uri: Uri?) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.putExtra(Intent.EXTRA_TEXT, "O que achou da minha maquiagem? - Filtro criado com MaquiAR")
+        intent.type = "image/png"
+        startActivity(Intent.createChooser(intent, null))
+    }
+
+    fun saveBitmap(bitmap: Bitmap?): Uri? {
+        var uri: Uri? = null
+
+        try {
+            val dateFormatter by lazy {
+                SimpleDateFormat(
+                    "yyyy.MM.dd 'at' HH:mm:ss z", Locale.getDefault()
+                )
+            }
+            val file = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "MaquiAR${dateFormatter.format(Date())}.png")
+            val stream = FileOutputStream(file)
+            bitmap!!.compress(CompressFormat.PNG, 100, stream)
+            stream.flush()
+            stream.close()
+            uri = FileProvider.getUriForFile(requireContext(), requireContext().applicationContext!!.packageName + ".provider", file)
+        } catch (e: java.lang.Exception) {
+            e.message
+        }
+        return uri
+    }
+
+    fun takeScreenshot(mGL: GL10?): Bitmap? {
+        val mWidth: Int = surfaceView!!.width
+        val mHeight: Int = surfaceView!!.height
+        val ib: IntBuffer = IntBuffer.allocate(mWidth * mHeight)
+        val ibt: IntBuffer = IntBuffer.allocate(mWidth * mHeight)
+        mGL!!.glReadPixels(0, 0, mWidth, mHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, ib)
+
+        // Convert upside down mirror-reversed image to right-side up normal image.
+        for (i in 0 until mHeight) {
+            for (j in 0 until mWidth) {
+                ibt.put((mHeight - i - 1) * mWidth + j, ib.get(i * mWidth + j))
+            }
+        }
+        val mBitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888)
+        mBitmap.copyPixelsFromBuffer(ibt)
+        return mBitmap
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {

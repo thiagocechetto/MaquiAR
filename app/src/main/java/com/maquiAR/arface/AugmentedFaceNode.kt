@@ -35,6 +35,11 @@ class AugmentedFaceNode(private val augmentedFace: AugmentedFace?, val context: 
         renderFaceMesh = true
     }
 
+    fun setFaceMeshTexture(assetName: String) {
+        augmentedFaceRenderer.createOnGlThread(context, assetName)
+        renderFaceMesh = true
+    }
+
     fun onDraw(projectionMatrix: FloatArray, viewMatrix: FloatArray, colorCorrectionRgba: FloatArray) {
         augmentedFace?.let { face ->
             if (face.trackingState != TrackingState.TRACKING) {
@@ -63,6 +68,10 @@ class AugmentedFaceNode(private val augmentedFace: AugmentedFace?, val context: 
 
     fun setEyeshadowColor(eyeshadowColor: FloatArray){
         augmentedFaceRenderer.setEyeshadowColor(eyeshadowColor)
+    }
+
+    fun setTextureColor(color: FloatArray) {
+        augmentedFaceRenderer.setTextureColor(color)
     }
 
     private fun getRegionPose(faceLandmark: FaceLandmark) : Pose? {

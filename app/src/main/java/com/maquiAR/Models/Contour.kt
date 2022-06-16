@@ -1,8 +1,16 @@
 package com.maquiAR.Models
 
-class Contour (name: String,
-               description: String,
-               images: java.util.ArrayList<String>,
-               ecommerceLink: String,
-               color: FloatArray
-) : Product(name, description, images, ecommerceLink, "models/contour.png", color)
+import com.maquiAR.R
+
+class Contour(
+    id: Int,
+    name: String,
+    description: String,
+    images: ArrayList<String>,
+    ecommerceLink: String,
+    color: FloatArray,
+    colorName: String
+) : Product(
+    id, name, description, images, ecommerceLink, "models/contour.png",
+    R.drawable.icon_blush, color, colorName
+)

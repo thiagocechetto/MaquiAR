@@ -43,7 +43,7 @@ public class AugmentedFaceRenderer {
     private var specular = 1.0f
     private var specularPower = 6.0f
 
-    private val textureId = IntArray(2)
+    private val textureId = IntArray(1)
 
     private val lightDirection = floatArrayOf(0.0f, 1.0f, 0.0f, 0.0f)
     private var program = 0
@@ -153,11 +153,7 @@ public class AugmentedFaceRenderer {
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
         GLES20.glUniform1i(textureUniform, 0)
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId[0])
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE1)
-        GLES20.glUniform1i(textureUniformEye, 1)
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId[1])
         GLES20.glUniform4fv(tintColorUniform, 1, tintColor, 0)
-        GLES20.glUniform4fv(tintColorEyesUniform, 1, tintColorEyes, 0)
         GLES20.glEnable(GLES20.GL_BLEND)
 
         // Textures are loaded with premultiplied alpha
@@ -170,6 +166,54 @@ public class AugmentedFaceRenderer {
         GLES20.glUseProgram(0)
         GLES20.glDepthMask(true)
     }
+
+    @Throws(IOException::class)
+    fun createOnGlThread(
+        context: Context,
+        diffuseTextureAssetName: String
+    ) {
+        val vertexShader: Int =
+            loadGLShader(TAG, context, GLES20.GL_VERTEX_SHADER, Companion.VERTEX_SHADER_NAME)
+        val fragmentShader: Int =
+            loadGLShader(TAG, context, GLES20.GL_FRAGMENT_SHADER, Companion.FRAGMENT_SHADER_NAME)
+        program = GLES20.glCreateProgram()
+        GLES20.glAttachShader(program, vertexShader)
+        GLES20.glAttachShader(program, fragmentShader)
+        GLES20.glLinkProgram(program)
+        modelViewProjectionUniform = GLES20.glGetUniformLocation(program, "u_ModelViewProjection")
+        modelViewUniform = GLES20.glGetUniformLocation(program, "u_ModelView")
+        textureUniform = GLES20.glGetUniformLocation(program, "u_Texture")
+        lightingParametersUniform = GLES20.glGetUniformLocation(program, "u_LightningParameters")
+        materialParametersUniform = GLES20.glGetUniformLocation(program, "u_MaterialParameters")
+        colorCorrectionParameterUniform =
+            GLES20.glGetUniformLocation(program, "u_ColorCorrectionParameters")
+        tintColorUniform = GLES20.glGetUniformLocation(program, "u_TintColor")
+        attriVertices = GLES20.glGetAttribLocation(program, "a_Position")
+        attriUvs = GLES20.glGetAttribLocation(program, "a_TexCoord")
+        attriNormals = GLES20.glGetAttribLocation(program, "a_Normal")
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
+        GLES20.glGenTextures(1, textureId, 0)
+        loadTexture(context, textureId, diffuseTextureAssetName)
+    }
+
+    @Throws(IOException::class)
+    private fun loadTexture(
+        context: Context,
+        textureId: IntArray,
+        filename: String
+    ) {
+        val textureBitmap = BitmapFactory.decodeStream(context.getAssets().open(filename))
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId[0])
+        GLES20.glTexParameteri(
+            GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR_MIPMAP_LINEAR
+        )
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR)
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, textureBitmap, 0)
+        GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D)
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0)
+        textureBitmap.recycle()
+    }
+
 
     fun setMaterialProperties(
         ambient: Float,
@@ -198,6 +242,10 @@ public class AugmentedFaceRenderer {
 
     fun setEyeshadowColor(eyeshadowColor: FloatArray) {
         tintColorEyes = eyeshadowColor
+    }
+
+    fun setTextureColor(color: FloatArray) {
+        tintColor = color
     }
 
     companion object {
