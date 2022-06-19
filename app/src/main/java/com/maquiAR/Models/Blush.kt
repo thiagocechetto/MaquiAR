@@ -2,7 +2,7 @@ package com.maquiAR.Models
 
 import com.maquiAR.R
 
-class Contour(
+class Blush(
     id: Int,
     name: String,
     description: String,
@@ -11,6 +11,6 @@ class Contour(
     color: FloatArray,
     colorName: String
 ) : Product(
-    id, name, description, images, ecommerceLink, "models/contour.png",
+    id, name, description, images, ecommerceLink, "models/blush.png",
     R.drawable.icon_blush, color, colorName
 )

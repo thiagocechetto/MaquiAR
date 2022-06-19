@@ -12,7 +12,17 @@ Algumas features deste trabalho foram realizadas por terceiros. Para fazer o uso
 
 Link: https://github.com/Kristina-Simakova/photobooth_codelab_start_project
 
-### Android Image Slide
+### Android Image Slider
 
 Link: https://github.com/denzcoskun/ImageSlideshow
+
+### Makeup mask
+
+Link: https://github.com/VivianVKJ/Unity-ARFoundation-echoAR-Face-Makeup
+
+### Icons
+
+https://www.flaticon.com/free-icon/lipstick_1024505?related_id=1024505&origin=tag
+https://www.flaticon.com/free-icon/eye-make-up_3557187?related_id=3557187&origin=tag
+https://www.flaticon.com/free-icon/makeup_1024537?related_id=1024537&origin=tag
 

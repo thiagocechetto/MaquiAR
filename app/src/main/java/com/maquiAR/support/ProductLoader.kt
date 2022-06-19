@@ -1,6 +1,6 @@
 package com.maquiAR.support
 
-import com.maquiAR.Models.Contour
+import com.maquiAR.Models.Blush
 import com.maquiAR.Models.EyeShadow
 import com.maquiAR.Models.Lipstick
 import com.maquiAR.Models.Product
@@ -73,7 +73,7 @@ object ProductLoader {
         for (i in 0..14) {
             if (i % 3 == 0) {
                 allProducts!!.add(
-                    Contour(
+                    Blush(
                         i,
                         "Contorno",
                         "tipo base ta ligado",

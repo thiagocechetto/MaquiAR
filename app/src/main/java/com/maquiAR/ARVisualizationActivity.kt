@@ -165,30 +165,6 @@ class ARVisualizationActivity : AppCompatActivity(), AugmentedFaceListener,
 
     fun takePhoto(view: View) {
         augmentedFaceFragment!!.takeScreenshot = true
-
-//        var uri: Uri? = saveImageExternal(bitmap)
-//        shareImage(uri)
-    }
-    private fun saveImageExternal(bitmap: Bitmap?): Uri? {
-        var uri: Uri? = null
-        try {
-            val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "to-share.png")
-            val stream = FileOutputStream(file)
-            bitmap!!.compress(Bitmap.CompressFormat.PNG, 90, stream)
-            stream.close()
-            uri = Uri.fromFile(file)
-        } catch (e: IOException) {
-            e
-        }
-        return uri
-    }
-
-    private fun shareImage(uri: Uri?) {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_STREAM, uri)
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        intent.type = "image/png"
-        startActivity(intent)
     }
 
     fun toggleProductList(view: View) {
